@@ -1,673 +1,592 @@
-/* ─────────────────────────────────────
-   TOKENS
-───────────────────────────────────── */
-:root {
-  /* Primary */
-  --green-dark:   #0b3d2e;
-  --green:        #1f6a4f;
-  --green-light:  #8bc37a;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Replay — Second life for plastics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --green-dark:   #094732;
+      --green-light:  #8bc37a;
+      --pink:         #9d1857;
+      --purple:       #8284ef;
+      --red:          #cd533b;
+      --sand:         #f5c396;
+      --white:        #f8faf7;
+      --text:         #0e1e17;
+      --muted:        #4a6b59;
+    }
 
-  /* Warm accents */
-  --pink:         #9d1857;
-  --purple:       #6f72e8;
-  --red:          #cd533b;
-  --sand:         #f5c396;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Neutrals */
-  --white:        #f8faf7;
-  --cream:        #fdf8f2;
-  --text:         #102019;
-  --muted:        #52665c;
-  --border:       rgba(11,61,46,0.08);
+    html { scroll-behavior: smooth; }
 
-  /* Accent helpers */
-  --accent-warm: linear-gradient(135deg, #9d1857 0%, #cd533b 100%);
-  --accent-soft: rgba(245,195,150,0.18);
-}
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      background: rgba(248, 250, 247, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(9,71,50,0.08);
+    }
 
-html {
-  scroll-behavior: smooth;
-}
+    nav img.logo { height: 44px; background: transparent;}
 
-body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--white);
-  color: var(--text);
-  overflow-x: hidden;
-  line-height: 1.6;
-}
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
 
-/* ─────────────────────────────────────
-   GLOBAL TRANSITIONS
-───────────────────────────────────── */
-a,
-button,
-.card,
-.step,
-input,
-textarea {
-  transition:
-    background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
-}
+    nav ul a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      color: var(--green-dark);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--green-light); }
 
-/* ─────────────────────────────────────
-   NAV
-───────────────────────────────────── */
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
+    nav .nav-cta {
+      background: var(--green-dark);
+      color: var(--white) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      transition: background 0.2s !important;
+    }
+    nav .nav-cta:hover { background: var(--green-light) !important; color: var(--text) !important; }
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--green-dark);
+    }
 
-  padding: 1rem 2.5rem;
+    /* Animated plastic-chain background circles */
+    #hero::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      border: 2px solid rgba(139,195,122,0.12);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseRing 6s ease-in-out infinite;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 450px; height: 450px;
+      border-radius: 50%;
+      border: 2px solid rgba(139,195,122,0.2);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulseRing 6s ease-in-out infinite 1.5s;
+    }
 
-  background: rgba(11, 61, 46, 0.95);
-  backdrop-filter: blur(10px);
+    @keyframes pulseRing {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50%       { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+    }
 
-  border-bottom: 1px solid rgba(139,195,122,0.12);
-}
+    .hero-logo {
+      height: 120px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 4px 32px rgba(139,195,122,0.25));
+       background: transparent;
+    }
 
-nav img.logo {
-  height: 44px;
-  filter: brightness(1.8);
-}
+    .hero-tagline {
+      font-family: 'Merriweather', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      color: var(--green-light);
+      max-width: 680px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 2.5rem;
+    }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-}
+    .hero-sub {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      color: rgba(248,250,247,0.55);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 3rem;
+    }
 
-nav ul a {
-  text-decoration: none;
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
 
-  font-size: 0.875rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+    .btn-primary {
+      background: var(--green-light);
+      color: var(--green-dark);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,195,122,0.35); }
 
-  color: rgba(248,250,247,0.72);
-}
+    .btn-secondary {
+      border: 1.5px solid rgba(139,195,122,0.4);
+      color: var(--green-light);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 2rem;
+      border-radius: 2rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--green-light); color: var(--white); }
 
-nav ul a:hover {
-  color: var(--sand);
-}
+    /* ── SECTIONS SHARED ── */
+    section { padding: 6rem 2rem; }
 
-.nav-cta {
-  background: var(--accent-warm);
-  color: white !important;
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
 
-  padding: 0.55rem 1.2rem;
-  border-radius: 999px;
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      margin-bottom: 1rem;
+    }
 
-  box-shadow: 0 8px 24px rgba(157,24,87,0.22);
-}
+    h2 {
+      font-family: 'Merriweather', serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      color: var(--green-dark);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+    }
 
-.nav-cta:hover {
-  transform: translateY(-2px);
-}
+    /* ── PROBLEM ── */
+    #problem { background: var(--white); }
 
-/* ─────────────────────────────────────
-   HERO
-───────────────────────────────────── */
-#hero {
-  min-height: 100vh;
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    .problem-text p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
 
-  text-align: center;
+    .problem-text strong { color: var(--text); }
 
-  padding: 7rem 2rem 4rem;
+    .stat-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
 
-  position: relative;
-  overflow: hidden;
+    .stat {
+      border-left: 3px solid var(--green-light);
+      padding-left: 1.2rem;
+    }
 
-  background:
-    radial-gradient(circle at top right,
-      rgba(245,195,150,0.18),
-      transparent 30%),
-    radial-gradient(circle at bottom left,
-      rgba(157,24,87,0.08),
-      transparent 25%),
-    var(--white);
-}
+    .stat-number {
+      font-family: 'Merriweather', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      line-height: 1;
+    }
 
-/* Animated circles */
-#hero::before,
-#hero::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: pulseRing 6s ease-in-out infinite;
-}
+    .stat-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      line-height: 1.5;
+    }
 
-#hero::before {
-  width: 700px;
-  height: 700px;
-  border: 2px solid rgba(139,195,122,0.12);
-}
+    /* ── SOLUTION ── */
+    #solution {
+      background: var(--green-dark);
+      color: var(--white);
+    }
 
-#hero::after {
-  width: 450px;
-  height: 450px;
-  border: 2px solid rgba(157,24,87,0.10);
-  animation-delay: 1.5s;
-}
+    #solution h2 { color: var(--white); }
+    #solution .section-label { color: var(--green-light); }
 
-@keyframes pulseRing {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.5;
+    .solution-intro {
+      font-size: 1.1rem;
+      color: rgba(248,250,247,0.7);
+      line-height: 1.8;
+      max-width: 640px;
+      margin-bottom: 3.5rem;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .step {
+      background: rgba(139,195,122,0.07);
+      border: 1px solid rgba(139,195,122,0.18);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .step:hover {
+      border-color: rgba(139,195,122,0.5);
+      background: rgba(139,195,122,0.12);
+    }
+
+    .step-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green-light);
+      margin-bottom: 0.75rem;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: rgba(248,250,247,0.6);
+      line-height: 1.7;
+    }
+
+    /* ── WHY REPLAY ── */
+    #why { background: #f0f7ec; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 2px 16px rgba(9,71,50,0.06);
+      border-top: 3px solid transparent;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .card:hover { box-shadow: 0 8px 32px rgba(9,71,50,0.12); transform: translateY(-3px); }
+
+    .card:nth-child(1) { border-top-color: var(--green-light); }
+    .card:nth-child(2) { border-top-color: var(--purple); }
+    .card:nth-child(3) { border-top-color: var(--sand); }
+
+    .card-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+
+    .card h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--green-dark);
+      text-align: center;
+    }
+
+    #contact h2 { color: var(--white); margin-bottom: 1rem; }
+    #contact .section-label { color: var(--green-light); }
+
+    #contact p {
+      font-size: 1.05rem;
+      color: rgba(248,250,247,0.65);
+      line-height: 1.8;
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      padding: 0.9rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(139,195,122,0.25);
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(248,250,247,0.35); }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--green-light); }
+
+    .contact-form button {
+      background: var(--green-light);
+      color: var(--green-dark);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(139,195,122,0.35); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #061f16;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: rgba(248,250,247,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      .problem-grid,
+      .process-steps,
+      .cards { grid-template-columns: 1fr; }
+      .hero-logo { height: 80px; }
+    }
+
+    /* ── REVEAL ANIMATION ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <img src="logo_degr1.png" alt="Replay" class="logo" />
+  <ul>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#why">Why Replay</a></li>
+    <li><a href="#contact" class="nav-cta">Contact us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <img src="logo_degr1.png" alt="Replay" class="hero-logo" />
+  <p class="hero-sub">Plastic upcycling technology</p>
+  <h1 class="hero-tagline">The additive that gives a second life<br>to the most degraded plastics</h1>
+  <div class="hero-actions">
+    <a href="#solution" class="btn-primary">Discover our technology</a>
+    <a href="#contact" class="btn-secondary">Get in touch</a>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container reveal">
+    <p class="section-label">The challenge</p>
+    <h2>Recycled plastic loses what makes it useful.</h2>
+    <div class="problem-grid">
+      <div class="problem-text">
+        <p>Each time a plastic is recycled, <strong>its polymer chains degrade</strong>. Mechanical properties — tensile strength, impact resistance, flexibility — deteriorate with every cycle.</p>
+        <p>This forces manufacturers to blend recycled material with virgin plastic, <strong>limiting the real circularity</strong> of the value chain and keeping the industry dependent on fossil feedstocks.</p>
+        <p>The result: a recycling sector that processes more volume but delivers lower-quality material, narrowing the market for truly circular products.</p>
+      </div>
+      <div class="stat-block">
+        <div class="stat">
+          <div class="stat-number">~30%</div>
+          <div class="stat-desc">loss in mechanical performance after a single recycling cycle for standard polyolefins</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">9%</div>
+          <div class="stat-desc">of all plastic ever produced has been recycled — the rest is landfill, incineration, or leakage</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">×4</div>
+          <div class="stat-desc">projected growth in global plastic demand by 2050, making quality recycling a strategic necessity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="container reveal">
+    <p class="section-label">Our technology</p>
+    <h2>A drop-in additive that restores mechanical integrity.</h2>
+    <p class="solution-intro">Replay develops a reactive additive — our recycling agent — that reconstructs degraded polymer chains during the melt-processing stage. No new equipment. No process disruption. Just better material out.</p>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-icon">♻️</div>
+        <h3>Degraded feedstock in</h3>
+        <p>Post-consumer or post-industrial recycled plastic, regardless of degradation level, enters a standard extrusion process.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">⚗️</div>
+        <h3>Replay agent added</h3>
+        <p>Our additive is dosed directly at the extruder. It reacts with broken chain ends, rebuilding molecular weight and restoring structure.</p>
+      </div>
+      <div class="step">
+        <div class="step-icon">✅</div>
+        <h3>Virgin-grade performance out</h3>
+        <p>The output material meets or exceeds the mechanical specs of virgin equivalents — ready for demanding applications.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY REPLAY -->
+<section id="why">
+  <div class="container reveal">
+    <p class="section-label">Why Replay</p>
+    <h2>Circularity that doesn't compromise on performance.</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <h3>Science-first formulation</h3>
+        <p>Our agent is designed at the molecular level to target the specific degradation pathways of polyolefin and engineering polymers.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <h3>Zero capex for processors</h3>
+        <p>Replay integrates directly into existing extrusion and compounding lines. No new infrastructure, no downtime, no requalification.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <h3>Real decarbonisation impact</h3>
+        <p>By replacing virgin plastic with restored recycled material, Replay directly reduces CO₂ emissions and fossil resource consumption at scale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container reveal">
+    <p class="section-label">Get in touch</p>
+    <h2>Let's talk about your recycling challenge.</h2>
+    <p>Whether you're a compounder, brand owner, or investor, we'd love to explore how Replay can fit into your process.</p>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <input type="text" placeholder="Your name" required />
+      <input type="email" placeholder="Email address" required />
+      <input type="text" placeholder="Company" />
+      <textarea rows="4" placeholder="Tell us about your project or question…"></textarea>
+      <button type="submit">Send message →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Replay. All rights reserved. — Restoring plastics, one cycle at a time.</p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Form submit placeholder
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = '#8bc37a';
+    btn.disabled = true;
   }
-
-  50% {
-    transform: translate(-50%, -50%) scale(1.06);
-    opacity: 1;
-  }
-}
-
-.hero-logo {
-  height: 120px;
-  margin-bottom: 2.5rem;
-  position: relative;
-  z-index: 2;
-
-  filter:
-    drop-shadow(0 4px 32px rgba(139,195,122,0.20))
-    drop-shadow(0 2px 16px rgba(157,24,87,0.12));
-}
-
-.hero-sub {
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-
-  color: var(--muted);
-
-  margin-bottom: 1.5rem;
-
-  position: relative;
-  z-index: 2;
-}
-
-.hero-tagline {
-  font-family: 'Merriweather', serif;
-  font-style: italic;
-  font-weight: 300;
-
-  font-size: clamp(2rem, 5vw, 4rem);
-  line-height: 1.25;
-
-  max-width: 760px;
-
-  color: var(--green-dark);
-
-  position: relative;
-  z-index: 2;
-
-  margin-bottom: 2.5rem;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  position: relative;
-  z-index: 2;
-}
-
-.btn-primary {
-  background: var(--accent-warm);
-  color: white;
-
-  text-decoration: none;
-
-  padding: 0.9rem 2rem;
-  border-radius: 999px;
-
-  font-weight: 700;
-
-  box-shadow: 0 10px 30px rgba(157,24,87,0.22);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 38px rgba(157,24,87,0.32);
-}
-
-.btn-secondary {
-  border: 1.5px solid rgba(11,61,46,0.14);
-
-  color: var(--green-dark);
-
-  text-decoration: none;
-
-  padding: 0.9rem 2rem;
-  border-radius: 999px;
-
-  font-weight: 700;
-
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(8px);
-}
-
-.btn-secondary:hover {
-  border-color: var(--pink);
-  color: var(--pink);
-}
-
-/* ─────────────────────────────────────
-   SHARED
-───────────────────────────────────── */
-section {
-  padding: 6rem 2rem;
-}
-
-.container {
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.section-label {
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-
-  color: var(--pink);
-
-  margin-bottom: 1rem;
-}
-
-h2 {
-  font-family: 'Merriweather', serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.2;
-
-  color: var(--green-dark);
-
-  margin-bottom: 1.5rem;
-}
-
-/* ─────────────────────────────────────
-   PROBLEM
-───────────────────────────────────── */
-#problem {
-  background:
-    linear-gradient(
-      180deg,
-      #0b3d2e 0%,
-      #0d4a37 100%
-    );
-}
-
-#problem h2 {
-  color: white;
-}
-
-.problem-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-
-  margin-top: 3rem;
-
-  align-items: center;
-}
-
-.problem-text p {
-  color: rgba(248,250,247,0.82);
-
-  font-size: 1.05rem;
-  line-height: 1.9;
-
-  margin-bottom: 1.2rem;
-}
-
-.problem-text strong {
-  color: var(--sand);
-}
-
-.stat-block {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.stat {
-  border-left: 3px solid var(--sand);
-  padding-left: 1.4rem;
-}
-
-.stat-number {
-  font-family: 'Merriweather', serif;
-  font-size: 3rem;
-  line-height: 1;
-
-  color: white;
-}
-
-.stat-desc {
-  margin-top: 0.5rem;
-
-  color: rgba(248,250,247,0.68);
-
-  font-size: 0.92rem;
-  line-height: 1.7;
-}
-
-/* ─────────────────────────────────────
-   SOLUTION
-───────────────────────────────────── */
-#solution {
-  background: var(--cream);
-}
-
-.solution-intro {
-  font-size: 1.08rem;
-  line-height: 1.9;
-
-  color: var(--muted);
-
-  max-width: 760px;
-
-  margin-bottom: 3.5rem;
-}
-
-.process-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-}
-
-.step {
-  background: white;
-
-  border: 1px solid rgba(11,61,46,0.06);
-  border-radius: 18px;
-
-  padding: 2rem;
-
-  box-shadow: 0 6px 20px rgba(11,61,46,0.04);
-}
-
-.step:nth-child(1) {
-  border-top: 4px solid var(--sand);
-}
-
-.step:nth-child(2) {
-  border-top: 4px solid var(--pink);
-}
-
-.step:nth-child(3) {
-  border-top: 4px solid var(--red);
-}
-
-.step:hover {
-  transform: translateY(-5px);
-
-  box-shadow:
-    0 18px 40px rgba(11,61,46,0.08);
-}
-
-.step-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.step h3 {
-  font-family: 'Merriweather', serif;
-  font-size: 1.05rem;
-
-  color: var(--green-dark);
-
-  margin-bottom: 0.8rem;
-}
-
-.step p {
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-/* ─────────────────────────────────────
-   WHY
-───────────────────────────────────── */
-#why {
-  background:
-    linear-gradient(
-      180deg,
-      #f7faf6 0%,
-      #f0f7ec 100%
-    );
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.8rem;
-
-  margin-top: 3rem;
-}
-
-.card {
-  background: white;
-
-  border-radius: 18px;
-
-  padding: 2rem;
-
-  border: 1px solid rgba(11,61,46,0.05);
-
-  box-shadow: 0 2px 16px rgba(9,71,50,0.05);
-}
-
-.card:hover {
-  transform: translateY(-5px);
-
-  box-shadow:
-    0 18px 40px rgba(11,61,46,0.10);
-}
-
-.card:nth-child(1) {
-  border-top: 4px solid var(--green-light);
-}
-
-.card:nth-child(2) {
-  border-top: 4px solid var(--purple);
-}
-
-.card:nth-child(3) {
-  border-top: 4px solid var(--sand);
-}
-
-.card-icon {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-}
-
-.card h3 {
-  font-family: 'Merriweather', serif;
-
-  color: var(--green-dark);
-
-  margin-bottom: 0.7rem;
-}
-
-.card p {
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-/* ─────────────────────────────────────
-   CONTACT
-───────────────────────────────────── */
-#contact {
-  background:
-    linear-gradient(
-      180deg,
-      #0b3d2e 0%,
-      #082d22 100%
-    );
-
-  text-align: center;
-}
-
-#contact h2 {
-  color: white;
-}
-
-#contact p {
-  color: rgba(248,250,247,0.72);
-
-  max-width: 620px;
-
-  margin:
-    0 auto
-    2.5rem;
-
-  line-height: 1.9;
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-.contact-form input,
-.contact-form textarea {
-  background: rgba(255,255,255,0.06);
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  border-radius: 12px;
-
-  padding: 1rem 1.2rem;
-
-  color: white;
-
-  font-family: inherit;
-  font-size: 0.95rem;
-
-  outline: none;
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: rgba(248,250,247,0.38);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: var(--pink);
-  box-shadow: 0 0 0 4px rgba(157,24,87,0.12);
-}
-
-.contact-form button {
-  background: var(--accent-warm);
-  color: white;
-
-  border: none;
-  border-radius: 999px;
-
-  padding: 1rem 2rem;
-
-  font-weight: 700;
-  cursor: pointer;
-
-  box-shadow: 0 10px 30px rgba(157,24,87,0.22);
-}
-
-.contact-form button:hover {
-  transform: translateY(-2px);
-}
-
-/* ─────────────────────────────────────
-   FOOTER
-───────────────────────────────────── */
-footer {
-  background: #051a14;
-
-  padding: 2rem;
-
-  text-align: center;
-}
-
-footer p {
-  color: rgba(248,250,247,0.32);
-
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-}
-
-/* ─────────────────────────────────────
-   REVEAL
-───────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* ─────────────────────────────────────
-   RESPONSIVE
-───────────────────────────────────── */
-@media (max-width: 768px) {
-
-  nav ul {
-    display: none;
-  }
-
-  .problem-grid,
-  .process-steps,
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-logo {
-    height: 82px;
-  }
-
-  .hero-tagline {
-    font-size: 2.3rem;
-  }
-
-  section {
-    padding: 5rem 1.5rem;
-  }
-}
+</script>
+</body>
+</html>
